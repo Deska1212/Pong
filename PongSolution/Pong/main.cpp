@@ -25,6 +25,8 @@
 #define RAYGUI_SUPPORT_ICONS
 #include <raygui.h>
 
+#include "Paddle.h"
+
 int main(int argc, char* argv[])
 {
     // Constants
@@ -41,8 +43,13 @@ int main(int argc, char* argv[])
     int screenHeight = 450;
 
     InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
-
     SetTargetFPS(60);
+
+    // Initializing Game Objects
+    Paddle topPaddle(screenWidth / 2, margin, paddleWidth, paddleHeight, BLUE, paddleSpeed);
+    Paddle bottomPaddle(screenWidth / 2, margin, screenHeight - paddleWidth, paddleHeight, BLUE, paddleSpeed);
+
+
     //--------------------------------------------------------------------------------------
 
     // Main game loop
@@ -52,6 +59,27 @@ int main(int argc, char* argv[])
         //----------------------------------------------------------------------------------
         // TODO: Update your variables here
         //----------------------------------------------------------------------------------
+
+        // Update/Detect Player Input and move paddles
+        if (IsKeyDown(KEY_LEFT))
+        {
+            topPaddle.MoveLeft(margin);
+        }
+
+        if (IsKeyDown(KEY_RIGHT))
+        {
+            topPaddle.MoveRight(screenWidth - margin);
+        }
+
+        if (IsKeyDown(KEY_A))
+        {
+            bottomPaddle.MoveLeft(margin);
+        }
+
+        if (IsKeyDown(KEY_D))
+        {
+            bottomPaddle.MoveRight(screenWidth - margin);
+        }
 
         // Draw
         //----------------------------------------------------------------------------------
