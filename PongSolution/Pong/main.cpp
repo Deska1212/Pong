@@ -38,6 +38,9 @@ int main(int argc, char* argv[])
     const int ballSpeed = 4.5;
     const int paddleSpeed = 5;
 
+    int bottomScore = 0;
+    int topScore = 0;
+
     // Initialization
     //--------------------------------------------------------------------------------------
     int screenWidth = 550;
@@ -56,6 +59,9 @@ int main(int argc, char* argv[])
     Ball ball(screenWidth / 2, screenHeight / 2, ballRadius, RED);
     ball.ApplyRandomDirection(ballSpeed); // Set initial ball velocity, goes down randomly left or right
 
+    // Init Ball Collision Box
+    CollisionBox ballCollisionBox = ball.GetCollisionBox();
+    
     //--------------------------------------------------------------------------------------
 
     // Main game loop
@@ -87,6 +93,75 @@ int main(int argc, char* argv[])
             bottomPaddle.MoveRight(screenWidth - margin);
         }
 
+        ball.Move();
+        ballCollisionBox = ball.GetCollisionBox();
+
+        // Get the position of the ball
+        float ballX;
+        float ballY;
+
+        ball.GetPosition(ballX, ballY);
+
+
+        // Check collisions on ball and change y delta if the ball hits a paddle
+        if (ball.GetCollisionBox().CollidesWith(topPaddle.GetCollisionBox()) || ball.GetCollisionBox().CollidesWith(bottomPaddle.GetCollisionBox()))
+        {
+            float xDir;
+            float yDir;
+            ball.GetDirection(xDir, yDir);
+            ball.SetDirection(xDir, -yDir);
+        }
+
+
+
+        // UNCOMMENT THIS FOR EASIER ONE PLAYER TESTING 
+        // player1.ImpossibleAI(ballX);
+
+
+        // Check collisions on ball to see if it has hit the sides, if it has invert its X direction
+        if (ballX < margin || ballX > screenWidth - margin)
+        {
+            float xDir;
+            float yDir;
+            ball.GetDirection(xDir, yDir);
+            ball.SetDirection(-xDir, yDir);
+        }
+
+        /*
+        * Loose/Win conditions:
+        *
+        * If the balls Y position goes < margin (topPaddle's y position) -> bottomPaddle wins
+        * If the balls Y position goes > screenHeight - margin (bottomPaddle's y pos) -> topPaddle wins
+        *
+        */
+
+        // Check win/loose conditions
+        if (ballY < margin)
+        {
+            // The ball has crossed the top paddles goal area
+            // Reset the ball
+            ball.SetPosition(screenWidth / 2, screenHeight / 2);
+            ball.ApplyRandomDirection(ballSpeed);
+
+
+            // Point goes to bottom paddle
+            bottomScore++;
+        }
+
+        if (ballY > screenHeight - margin)
+        {
+            // The ball has crossed the bottom paddles goal area
+            // Reset the ball
+            ball.SetPosition(screenWidth / 2, screenHeight / 2);
+            ball.ApplyRandomDirection(ballSpeed);
+
+            // Point goes to top paddle
+            topPaddle++;
+        }
+
+
+
+
         // Draw
         //----------------------------------------------------------------------------------
         BeginDrawing();
@@ -96,6 +171,9 @@ int main(int argc, char* argv[])
         // Draw Paddles
         topPaddle.Draw();
         bottomPaddle.Draw();
+
+        // Draw ball
+        ball.Draw();
 
         DrawText("----------------------------------------------------------------------------", 0, screenHeight / 2, 20, LIGHTGRAY);
 

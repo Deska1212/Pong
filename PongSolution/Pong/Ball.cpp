@@ -68,4 +68,10 @@ void Ball::Draw()
 	DrawCircle(xPos, yPos, radius, color);
 }
 
+CollisionBox Ball::GetCollisionBox()
+{
+	return CollisionBox(xPos - radius, yPos - radius, xPos + radius, yPos + radius);
+}
+
+
 
