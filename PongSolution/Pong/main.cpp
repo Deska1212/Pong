@@ -104,12 +104,32 @@ int main(int argc, char* argv[])
 
 
         // Check collisions on ball and change y delta if the ball hits a paddle
-        if (ball.GetCollisionBox().CollidesWith(topPaddle.GetCollisionBox()) || ball.GetCollisionBox().CollidesWith(bottomPaddle.GetCollisionBox()))
+        if (ball.GetCollisionBox().CollidesWith(topPaddle.GetCollisionBox()))
         {
             float xDir;
             float yDir;
             ball.GetDirection(xDir, yDir);
-            ball.SetDirection(xDir, -yDir);
+
+            // Only collide with the paddle if the ball is moving in the direction of it
+            // -y direction is going up
+            if (yDir < 0)
+            {
+                ball.SetDirection(xDir, -yDir);
+            }
+        }
+        
+        if (ball.GetCollisionBox().CollidesWith(bottomPaddle.GetCollisionBox()))
+        {
+            float xDir;
+            float yDir;
+            ball.GetDirection(xDir, yDir);
+
+            // Only collider with paddle if the ball is moving in the direction of it
+            // +y direction is going down
+            if (yDir > 0)
+            {
+                ball.SetDirection(xDir, -yDir);
+            }
         }
 
 
@@ -156,7 +176,7 @@ int main(int argc, char* argv[])
             ball.ApplyRandomDirection(ballSpeed);
 
             // Point goes to top paddle
-            topPaddle++;
+            topScore++;
         }
 
 
