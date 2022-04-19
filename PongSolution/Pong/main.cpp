@@ -39,15 +39,15 @@ int main(int argc, char* argv[])
 
     // Initialization
     //--------------------------------------------------------------------------------------
-    int screenWidth = 800;
-    int screenHeight = 450;
+    int screenWidth = 550;
+    int screenHeight = 800;
 
     InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
     SetTargetFPS(60);
 
     // Initializing Game Objects
     Paddle topPaddle(screenWidth / 2, margin, paddleWidth, paddleHeight, BLUE, paddleSpeed);
-    Paddle bottomPaddle(screenWidth / 2, margin, screenHeight - paddleWidth, paddleHeight, BLUE, paddleSpeed);
+    Paddle bottomPaddle(screenWidth / 2, screenHeight - margin, paddleWidth, paddleHeight, BLUE, paddleSpeed);
 
 
     //--------------------------------------------------------------------------------------
@@ -87,7 +87,11 @@ int main(int argc, char* argv[])
 
         ClearBackground(RAYWHITE);
 
-        DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+        // Draw Paddles
+        topPaddle.Draw();
+        bottomPaddle.Draw();
+
+        DrawText("----------------------------------------------------------------------------", 0, screenHeight / 2, 20, LIGHTGRAY);
 
         EndDrawing();
         //----------------------------------------------------------------------------------
