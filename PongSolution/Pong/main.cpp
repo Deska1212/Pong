@@ -26,6 +26,7 @@
 #include <raygui.h>
 
 #include "Paddle.h"
+#include "Ball.h"
 
 int main(int argc, char* argv[])
 {
@@ -46,9 +47,14 @@ int main(int argc, char* argv[])
     SetTargetFPS(60);
 
     // Initializing Game Objects
+
+    // Init Paddles
     Paddle topPaddle(screenWidth / 2, margin, paddleWidth, paddleHeight, BLUE, paddleSpeed);
     Paddle bottomPaddle(screenWidth / 2, screenHeight - margin, paddleWidth, paddleHeight, BLUE, paddleSpeed);
 
+    // Init Ball
+    Ball ball(screenWidth / 2, screenHeight / 2, ballRadius, RED);
+    ball.ApplyRandomDirection(ballSpeed); // Set initial ball velocity, goes down randomly left or right
 
     //--------------------------------------------------------------------------------------
 
