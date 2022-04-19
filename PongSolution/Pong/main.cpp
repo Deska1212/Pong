@@ -27,6 +27,14 @@
 
 int main(int argc, char* argv[])
 {
+    // Constants
+    const int margin = 20;
+    const int paddleWidth = 100;
+    const int paddleHeight = 20;
+    const int ballRadius = 15;
+    const int ballSpeed = 4.5;
+    const int paddleSpeed = 5;
+
     // Initialization
     //--------------------------------------------------------------------------------------
     int screenWidth = 800;
