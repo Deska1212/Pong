@@ -204,6 +204,7 @@ int main(int argc, char* argv[])
         std::string bScore;
         bScore = std::to_string(bottomScore);
 
+        // Draw Score text and centre point
         DrawText(tScore.c_str(), screenWidth / 2, 100, 60, ORANGE);
         DrawText("----------------------------------------------------------------------------", 0, screenHeight / 2, 20, LIGHTGRAY);
         DrawText(bScore.c_str(), screenWidth / 2, screenHeight - 150, 60, BLUE);
