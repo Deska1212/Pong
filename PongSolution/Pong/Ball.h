@@ -1,5 +1,6 @@
 #pragma once
 #include <raylib.h>
+#include "CollisionBox.h"
 
 class Ball
 {
@@ -13,6 +14,9 @@ private:
 
 	Color color;
 public:
+
+	// TODO: Comment this section with summaries
+
 	Ball(float x, float y, float r, Color c);
 	void Move();
 	void SetPosition(float x, float y);
@@ -21,4 +25,5 @@ public:
 	void GetDirection(float& x, float& y);
 	void ApplyRandomDirection(const float moveSpeed);
 	void Draw();
+	CollisionBox GetCollisionBox();
 };

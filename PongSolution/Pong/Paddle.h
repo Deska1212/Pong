@@ -1,5 +1,6 @@
 #pragma once
 #include <raylib.h>
+#include "CollisionBox.h"
 
 class Paddle
 {
@@ -47,6 +48,10 @@ public:
 	/// </summary>
 	void Draw();
 	
-	
+	/// <summary>
+	/// Returns collision box based on this paddles size and position
+	/// </summary>
+	/// <returns>The Collision Box detailed by this paddle</returns>
+	CollisionBox GetCollisionBox();
 
 };
