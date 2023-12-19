@@ -20,6 +20,7 @@
 ********************************************************************************************/
 
 #include <raylib.h>
+#include <string>
 
 #define RAYGUI_IMPLEMENTATION
 #define RAYGUI_SUPPORT_ICONS
@@ -38,6 +39,8 @@ int main(int argc, char* argv[])
     const int ballSpeed = 4.5;
     const int paddleSpeed = 5;
 
+    
+
     int bottomScore = 0;
     int topScore = 0;
 
@@ -52,11 +55,11 @@ int main(int argc, char* argv[])
     // Initializing Game Objects
 
     // Init Paddles
-    Paddle topPaddle(screenWidth / 2, margin, paddleWidth, paddleHeight, BLUE, paddleSpeed);
+    Paddle topPaddle(screenWidth / 2, margin, paddleWidth, paddleHeight, ORANGE, paddleSpeed);
     Paddle bottomPaddle(screenWidth / 2, screenHeight - margin, paddleWidth, paddleHeight, BLUE, paddleSpeed);
 
     // Init Ball
-    Ball ball(screenWidth / 2, screenHeight / 2, ballRadius, RED);
+    Ball ball(screenWidth / 2, screenHeight / 2, ballRadius, GREEN);
     ball.ApplyRandomDirection(ballSpeed); // Set initial ball velocity, goes down randomly left or right
 
     // Init Ball Collision Box
@@ -104,12 +107,32 @@ int main(int argc, char* argv[])
 
 
         // Check collisions on ball and change y delta if the ball hits a paddle
-        if (ball.GetCollisionBox().CollidesWith(topPaddle.GetCollisionBox()) || ball.GetCollisionBox().CollidesWith(bottomPaddle.GetCollisionBox()))
+        if (ball.GetCollisionBox().CollidesWith(topPaddle.GetCollisionBox()))
         {
             float xDir;
             float yDir;
             ball.GetDirection(xDir, yDir);
-            ball.SetDirection(xDir, -yDir);
+
+            // Only collide with the paddle if the ball is moving in the direction of it
+            // -y direction is going up
+            if (yDir < 0)
+            {
+                ball.SetDirection(xDir, -yDir);
+            }
+        }
+        
+        if (ball.GetCollisionBox().CollidesWith(bottomPaddle.GetCollisionBox()))
+        {
+            float xDir;
+            float yDir;
+            ball.GetDirection(xDir, yDir);
+
+            // Only collider with paddle if the ball is moving in the direction of it
+            // +y direction is going down
+            if (yDir > 0)
+            {
+                ball.SetDirection(xDir, -yDir);
+            }
         }
 
 
@@ -156,7 +179,7 @@ int main(int argc, char* argv[])
             ball.ApplyRandomDirection(ballSpeed);
 
             // Point goes to top paddle
-            topPaddle++;
+            topScore++;
         }
 
 
@@ -175,7 +198,16 @@ int main(int argc, char* argv[])
         // Draw ball
         ball.Draw();
 
+        std::string tScore;
+        tScore = std::to_string(topScore);
+
+        std::string bScore;
+        bScore = std::to_string(bottomScore);
+
+        // Draw Score text and centre point
+        DrawText(tScore.c_str(), screenWidth / 2, 100, 60, ORANGE);
         DrawText("----------------------------------------------------------------------------", 0, screenHeight / 2, 20, LIGHTGRAY);
+        DrawText(bScore.c_str(), screenWidth / 2, screenHeight - 150, 60, BLUE);
 
         EndDrawing();
         //----------------------------------------------------------------------------------
